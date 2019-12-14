@@ -1,0 +1,24 @@
+{
+  "name": "ktourvas/laravel-auth-journeys",
+  "type": "laravel package",
+  "require": {},
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kostas Tourvas",
+      "email": "k.tourvas@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "laravel\\auth\\journeys\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "laravel\\auth\\journeys\\LaravelAuthJourneysServiceProvider"
+      ]
+    }
+  }
+}
