@@ -19,7 +19,14 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    use ResetsPasswords {
+        reset as protected oreset;
+    }
+
+    /**
+     * password complexity level
+     */
+    protected $roleRule = 0;
 
     /**
      * Where to redirect users after resetting their password.
@@ -49,9 +56,42 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view(!empty( config('auth-journeys.ux.password.reset') ) ? config('auth-journeys.ux.password.reset') : 'auth.passwords.reset' )->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        return view( config('auth-journeys.ux.password.reset') )->with([
+            'token' => $token,
+            'email' => $request->email
+        ]);
+    }
+
+    public function reset(Request $request)
+    {
+        // TODO: add new to the list
+        $user = $this->broker()->getUser( $this->credentials( $request ) );
+        if( !empty( $user ) ) {
+            if( $this->broker()->tokenExists($user, $request->token) ) {
+                $this->roleRule = $user->passwordRule();
+                $this->redirectTo = $user->redirectTo();
+                if( $user->passwordConflicts( $request->password ) ) {
+                    return redirect()->back()->withErrors([ 'password' => 'invalid new password' ]);
+                }
+            }
+        }
+
+        return $this->oreset( $request );
+
+    }
+
+    /**
+     * Get the password reset validation rules.
+     *
+     * @return array
+     */
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8|'.$this->roleRule,
+        ];
     }
 
 }

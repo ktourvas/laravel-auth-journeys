@@ -34,6 +34,23 @@ class InactiveLogout
             return redirect('/login');
         }
 
+        if( \Auth::check() ) {
+
+            foreach (config('auth-journeys.roles') as $role => $rules ) {
+
+                if( $rules['inactivitylogout']
+                    && !empty($rules['logoutafter'])
+                    && $request->user()->userIs($role)
+                    && ( time() - $last->last_activity) > $rules['logoutafter']
+                ) {
+                    \Auth::logout();
+                    $request->session()->invalidate();
+                    return redirect('/login');
+                }
+            }
+
+        }
+
         return $next($request);
     }
 }

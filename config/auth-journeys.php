@@ -35,27 +35,33 @@ return [
 
     /**
      *
-     * password groups. array keys are checked against user roles for matching in order for rules
+     * role rules. array keys are checked against user roles for matching in order for rules
      * to be applied. Currently change policy only implemented.
      *
      */
-    'password' => [
+    'roles' => [
 
         'default' => [
 
             'complexity' => 0, // 0. min 8, 1. min 8, nums, letters, special, 2. min 8, nums, letters, capital letters, special,
 
-            'changepolicy' => 'none' // none, days
+            'changepolicy' => 'none', // none, days
+
+            'inactivitylogout' => false
 
         ],
 
         'admin' => [
 
-            'complexity' => '3', // 1. min 8, 2. min 8, nums, letters, special, 3. min 8, nums, letters, capital letters, special,
+            'complexity' => 2, // 1. min 8, 2. min 8, nums, letters, special, 3. min 8, nums, letters, capital letters, special,
 
             'changepolicy' => 'days', // none, days
 
-            'days' => 90
+            'days' => 90,
+
+            'inactivitylogout' => true,
+
+            'logoutafter' => 1800 // seconds
 
         ]
 

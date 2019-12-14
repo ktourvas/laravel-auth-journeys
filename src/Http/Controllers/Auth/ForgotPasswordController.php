@@ -35,9 +35,8 @@ class ForgotPasswordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLinkRequestForm()
-    {
-        return view(!empty( config('auth-journeys.ux.password.forgot') ) ? config('auth-journeys.ux.password.forgot') : 'auth.passwords.email' );
+    public function showLinkRequestForm() {
+        return view( config('auth-journeys.ux.password.email') );
     }
 
 }

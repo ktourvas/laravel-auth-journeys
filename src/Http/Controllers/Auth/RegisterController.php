@@ -152,23 +152,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Update the pre-set user instance.
-     *
-     * @param  array  $data
-     * @return bool
-     */
-    protected function update($user, array $data)
-    {
-        return $user->update([
-
-            'password' => Hash::make($data['password']),
-
-            'name' => $data['name'],
-
-        ]);
-    }
-
     protected function getPresetUser($email) {
         return PresetUser::where('email', $email)->first();
     }
@@ -180,7 +163,7 @@ class RegisterController extends Controller
     private function passwordComplexityRule($level) {
         // 0. min 8, 1. min 8, nums, letters, special, 2. min 8, nums, letters, capital letters, special,
         $regexs = [
-            'regex:/^{8,}$/',
+            'regex:/^(.*).{8,}$/',
             'regex:/^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*#?&])[a-z\d$@$!%*#?&]{8,}$/',
             'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/'
         ];

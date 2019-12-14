@@ -35,13 +35,13 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = !empty( config('auth-journeys.ux.login.redirectTo') ) ? config('auth-journeys.ux.login.redirectTo') : '/';
+        $this->redirectTo = config('auth-journeys.ux.login.redirectTo') ?? '/';
         $this->middleware('guest')->except('logout');
     }
 
     protected function authenticated($request, $user) {
 
-        $intended = $user->is_admin ? '/admin' : $this->redirectPath();
+        $intended = $user->redirectTo() ?? $this->redirectPath();
 
         if($request->ajax()) {
             return response()->json([
@@ -55,7 +55,7 @@ class LoginController extends Controller
     }
 
     public function showLoginForm() {
-        return view(!empty( config('auth-journeys.ux.login.view') ) ? config('auth-journeys.ux.login.view') : 'auth.login' );
+        return view( config('auth-journeys.ux.login.view') );
     }
 
     /**
