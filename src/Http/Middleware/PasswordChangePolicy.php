@@ -5,7 +5,7 @@ namespace laravel\auth\journeys\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class PasswordPolicy
+class PasswordChangePolicy
 {
     /**
      * Handle an incoming request.
@@ -32,10 +32,10 @@ class PasswordPolicy
                     $days = $rules['days']+1;
 
                     // Set true one if there is at least one password saved
-                    if( !empty( $request->user()->passwords()->orderBy('created_at', 'desc')->first() ) ) {
+                    if( !empty( $request->user()->password_since ) ) {
                         $days =
                             round(
-                                ( time() - strtotime($request->user()->passwords()->orderBy('created_at', 'desc')->first()->created_at ))
+                                ( time() - strtotime( $request->user()->password_since ) )
                                 /
                                 (60 * 60 * 24)
                             );

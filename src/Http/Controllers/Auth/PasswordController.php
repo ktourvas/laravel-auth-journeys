@@ -56,7 +56,7 @@ class PasswordController extends Controller {
         }
 
         // Check for password conflicts
-        if( $request->user()->passwordConflicts($request->new_password) ) {
+        if( $request->user()->passwordConflicts($request->new_password, true ) ) {
             return redirect()->back()->withErrors([ 'new_password' => 'invalid new password' ]);
         }
 

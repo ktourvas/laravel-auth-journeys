@@ -23,9 +23,7 @@ return [
 
         'password' => [
 
-            'forgot' => 'laj::passwords.email',
-
-            'email' => 'laj::passwords.email',
+            'email' => 'auth.passwords.email',
 
             'reset' => 'auth.passwords.reset',
 

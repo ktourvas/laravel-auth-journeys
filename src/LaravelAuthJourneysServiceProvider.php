@@ -26,7 +26,7 @@ class LaravelAuthJourneysServiceProvider extends ServiceProvider
 
         $this->app['router']->pushMiddlewareToGroup( 'web', \laravel\auth\journeys\Http\Middleware\InactiveLogout::class);
 
-        $this->app['router']->pushMiddlewareToGroup( 'web', \laravel\auth\journeys\Http\Middleware\PasswordPolicy::class);
+        $this->app['router']->pushMiddlewareToGroup( 'web', \laravel\auth\journeys\Http\Middleware\PasswordChangePolicy::class);
 
     }
 

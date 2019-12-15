@@ -57,7 +57,7 @@ class RegisterController extends Controller
 
         $this->allowSet = config('auth-journeys.ux.register.allowset');
 
-        $this->password_complexity_level = config('auth-journeys.password.default.complexity');
+        $this->password_complexity_level = config('auth-journeys.roles.default.complexity');
 
         $this->middleware('guest');
 
@@ -86,15 +86,13 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        $user->passwords()->create([
-            'password' => Hash::make($request->password),
-        ]);
-
         if( $presetuser->roles()->count() > 0 ) {
             $user->roles()->sync( array_column( $presetuser->roles()->get()->toArray() , 'role_id') );
         }
 
         $this->guard()->login($user);
+
+        $this->redirectTo = $user->redirectTo();
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
@@ -149,6 +147,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'password_since' => \DB::raw('NOW()')
         ]);
     }
 

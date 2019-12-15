@@ -43,15 +43,17 @@ trait HasAuthJourneys
     }
 
     public function changePassword($new) {
+
         $hash = \Hash::make( $new );
 
         $this->passwords()->create([
-            'password' => $hash
+            'password' => $this->password
         ]);
 
         // Save user with new password
         $this->update([
             'password' => $hash,
+            'password_since' => \DB::raw('NOW()')
         ]);
 
         // remove oldest password from list if count is over 9

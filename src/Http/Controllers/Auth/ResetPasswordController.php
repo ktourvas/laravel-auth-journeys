@@ -5,6 +5,7 @@ namespace laravel\auth\journeys\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
@@ -64,15 +65,18 @@ class ResetPasswordController extends Controller
 
     public function reset(Request $request)
     {
-        // TODO: add new to the list
+
         $user = $this->broker()->getUser( $this->credentials( $request ) );
+
         if( !empty( $user ) ) {
             if( $this->broker()->tokenExists($user, $request->token) ) {
-                $this->roleRule = $user->passwordRule();
-                $this->redirectTo = $user->redirectTo();
+                $user->pushCurrentToHistory();
                 if( $user->passwordConflicts( $request->password ) ) {
                     return redirect()->back()->withErrors([ 'password' => 'invalid new password' ]);
                 }
+                $this->roleRule = $user->passwordRule();
+                $this->redirectTo = $user->redirectTo();
+
             }
         }
 
