@@ -64,38 +64,24 @@ class RegisterController extends Controller
     }
 
     /**
-     * Handle a registration request for the application.
+     * The user has been registered.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  mixed  $user
+     * @return mixed
      */
-    public function register(Request $request)
+    protected function registered(Request $request, $user)
     {
+        $presetuser = $this->getPresetUser($user->email);
 
-        $this->validator($request->all())->validate();
-
-        if($this->allowSet) {
-
-            $presetuser = $this->getPresetUser($request->email);
-
-            if( empty($presetuser) ) {
-                return;
+        if( !empty($presetuser) ) {
+            if ($presetuser->roles()->count() > 0) {
+                $user->roles()->sync(array_column($presetuser->roles()->get()->toArray(), 'role_id'));
             }
-
         }
-
-        event(new Registered($user = $this->create($request->all())));
-
-        if( $presetuser->roles()->count() > 0 ) {
-            $user->roles()->sync( array_column( $presetuser->roles()->get()->toArray() , 'role_id') );
-        }
-
-        $this->guard()->login($user);
 
         $this->redirectTo = $user->redirectTo();
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
     }
 
     /**
@@ -156,7 +142,7 @@ class RegisterController extends Controller
     }
 
     public function showRegistrationForm() {
-        return view(!empty( config('auth-journeys.ux.register.view') ) ? config('auth-journeys.ux.register.view') : 'auth.register' );
+        return view( config('auth-journeys.ux.register.view') );
     }
 
     private function passwordComplexityRule($level) {
