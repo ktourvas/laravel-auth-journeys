@@ -36,6 +36,8 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->redirectTo = config('auth-journeys.ux.login.redirectTo') ?? '/';
+        $this->maxAttempts  = config('auth-journeys.ux.login.maxAttempts') ?? 5;
+        $this->decayMinutes  = config('auth-journeys.ux.login.decayMinutes') ?? 1;
         $this->middleware('guest')->except('logout');
     }
 

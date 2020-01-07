@@ -9,8 +9,11 @@ return [
 
             'redirectTo' => '/',
 
-            'view' => 'auth.login'
+            'view' => 'auth.login',
 
+            'maxAttempts' => 5,
+
+            'decayMinutes' => 10,
         ],
 
         'register' => [
