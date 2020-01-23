@@ -4,12 +4,6 @@ namespace laravel\auth\journeys\Entities;
 
 trait hasPasswordsHistory {
 
-    /**
-     * This method is called upon instantiation of the Eloquent Model.
-     * It adds the "seoMeta" field to the "$fillable" array of the model.
-     *
-     * @return void
-     */
     public function initializehasPasswordsHistory()
     {
         $this->fillable[] = 'password_since';

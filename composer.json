@@ -1,7 +1,11 @@
 {
   "name": "ktourvas/laravel-auth-journeys",
   "type": "laravel package",
-  "require": {},
+  "require": {
+    "ktourvas/rolesandperms": "^1.3"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "MIT",
   "authors": [
     {

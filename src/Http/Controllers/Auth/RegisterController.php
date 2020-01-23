@@ -72,12 +72,23 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        $presetuser = $this->getPresetUser($user->email);
 
-        if( !empty($presetuser) ) {
+        /**
+         * if a preset User is set for the registered email address check and sync possible roles set to it
+         */
+        if( !empty( $presetuser = $this->getPresetUser($user->email) ) ) {
             if ($presetuser->roles()->count() > 0) {
-                $user->roles()->sync(array_column($presetuser->roles()->get()->toArray(), 'role_id'));
+                $user->roles()->sync(
+                    array_column($presetuser->roles()->get()->toArray(), 'id')
+                );
             }
+        }
+
+        /**
+         * push newly created password to history if users are set with the hasPasswordsHistory trait
+         */
+        if( method_exists( $user, 'pushCurrentToHistory' ) ) {
+            $user->pushCurrentToHistory();
         }
 
         $this->redirectTo = $user->redirectTo();
