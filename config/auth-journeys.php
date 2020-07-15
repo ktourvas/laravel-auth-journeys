@@ -26,6 +26,8 @@ return [
 
         'password' => [
 
+            'change' => 'laj::passwordchange',
+
             'email' => 'auth.passwords.email',
 
             'reset' => 'auth.passwords.reset',
