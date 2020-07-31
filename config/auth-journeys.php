@@ -20,7 +20,7 @@ return [
 
             'allowset' => true, // allow only previously set users to register
 
-            'view' => 'auth.register'
+            'view' => 'auth.register',
 
         ],
 
@@ -68,6 +68,17 @@ return [
 
         ]
 
+    ],
+
+    'user' => [
+        'fields' => [
+//            'optin' => [
+//                'rules' => [ 'required', 'accepted' ],
+//                'messages' => [
+//                    'optin.required' => '',
+//                ],
+//            ]
+        ]
     ]
 
 ];
