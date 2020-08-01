@@ -25,9 +25,9 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * password complexity level
+     * password complexity rule
      */
-    protected $roleRule = 0;
+    protected $roleRule = '';
 
     /**
      * Where to redirect users after resetting their password.
@@ -76,7 +76,6 @@ class ResetPasswordController extends Controller
                 }
                 $this->roleRule = $user->passwordRule();
                 $this->redirectTo = $user->redirectTo();
-
             }
         }
 
@@ -94,7 +93,7 @@ class ResetPasswordController extends Controller
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:8|'.$this->roleRule,
+            'password' => 'required|confirmed|min:8'.$this->roleRule !== '' ? '|'.$this->roleRule : '',
         ];
     }
 
