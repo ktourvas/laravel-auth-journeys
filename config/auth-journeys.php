@@ -20,11 +20,13 @@ return [
 
             'allowset' => true, // allow only previously set users to register
 
-            'view' => 'auth.register'
+            'view' => 'auth.register',
 
         ],
 
         'password' => [
+
+            'change' => 'laj::passwordchange',
 
             'email' => 'auth.passwords.email',
 
@@ -66,6 +68,17 @@ return [
 
         ]
 
+    ],
+
+    'user' => [
+        'fields' => [
+//            'optin' => [
+//                'rules' => [ 'required', 'accepted' ],
+//                'messages' => [
+//                    'optin.required' => '',
+//                ],
+//            ]
+        ]
     ]
 
 ];

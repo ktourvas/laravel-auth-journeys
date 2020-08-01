@@ -125,6 +125,12 @@ class RegisterController extends Controller
             ],
         ];
 
+        if( !empty(config('auth-journeys.user.fields')) ) {
+            foreach ( config('auth-journeys.user.fields') as $key => $field ) {
+                $rules[$key] = $field['rules'];
+            }
+        }
+
         if($this->allowSet) {
             $rules['email'][] = 'exists:laj_presetusers';
         }
@@ -140,12 +146,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $create = [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'password_since' => \DB::raw('NOW()')
-        ]);
+        ];
+
+        if( !empty(config('auth-journeys.user.fields')) ) {
+            foreach ( config('auth-journeys.user.fields') as $key => $field ) {
+                $create[$key] = $data[$key];
+            }
+        }
+
+        return User::create($create);
     }
 
     protected function getPresetUser($email) {

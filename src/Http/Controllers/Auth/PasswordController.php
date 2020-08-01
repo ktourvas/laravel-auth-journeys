@@ -24,9 +24,13 @@ class PasswordController extends Controller {
      * @return mixed
      */
     public function showChangePassword(Request $request) {
-        return view('laj::passwordchange', [
+
+        $view = !empty(config('auth-journeys.ux.password.change')) ? config('auth-journeys.ux.password.change') : 'laj::passwordchange';
+
+        return view($view, [
             'status' => $request->session()->get('status') ?? null
         ]);
+
     }
 
     /**

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLajPresetusersTable extends Migration
+class CreateUserFields extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateLajPresetusersTable extends Migration
     {
 
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('password_since');
+            $table->timestamp('password_since')->nullable();
         });
 
     }

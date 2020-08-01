@@ -14,6 +14,11 @@ trait HasAuthJourneys
                 $intended = $rules['redirectTo'];
             }
         }
+
+        if($intended == '/' && !empty(config('auth-journeys.roles')['default']['redirectTo'])) {
+            $intended = config('auth-journeys.roles')['default']['redirectTo'];
+        }
+
         return $intended ;
     }
 
