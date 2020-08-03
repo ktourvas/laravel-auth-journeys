@@ -155,7 +155,9 @@ class RegisterController extends Controller
 
         if( !empty(config('auth-journeys.user.fields')) ) {
             foreach ( config('auth-journeys.user.fields') as $key => $field ) {
-                $create[$key] = $data[$key];
+                if( !empty($data[$key]) ) {
+                    $create[$key] = $data[$key];
+                }
             }
         }
 
